@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import study.jpa.domain.Account;
+import study.jpa.domain.Comment;
+import study.jpa.domain.Post;
 import study.jpa.domain.Study;
 
 @Transactional
@@ -33,5 +35,26 @@ public class JpaRunner implements ApplicationRunner {
         Session session = entityManager.unwrap(Session.class);
         session.save(account);
         session.save(study);
+
+        Account chloe = session.load(Account.class, account.getId());
+        System.out.println("--- Persistence Context Cache: " + chloe.getUsername());
+
+
+        //* Casecade example *//
+        Post post = new Post();
+        post.setTitle("Spring Data JPA Stuty");
+
+        Comment comment1 = new Comment();
+        comment1.setComment("hello");
+        post.addCommnet(comment1);
+
+        Comment comment2 = new Comment();
+        comment2.setComment("nice to meet you");
+        post.addCommnet(comment2);
+
+        session.save(post);
+
+        // Post post = session.get(Post.class, 3l);
+        // session.delete(post);
     }
 }
