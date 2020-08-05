@@ -1,7 +1,15 @@
 package study.jpa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.springframework.boot.ApplicationArguments;
@@ -22,16 +30,18 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        //* entityManager session save *//
         // accountSave();
 
-        //* Casecade *//
         // postSave();
 
-        //* Fetch *//
-        fetchSelect();
+        // fetchSelect();
+
+        // queryMapping();
     }
 
+    /**
+     * EntityManager session save 
+     */
     public void accountSave() {
         Account account = new Account();
         account.setUsername("chloe");
@@ -50,6 +60,9 @@ public class JpaRunner implements ApplicationRunner {
         System.out.println("### Persistence Context Cache: " + chloe.getUsername());
     }
 
+    /**
+     * Casecade save, delete
+     */
     public void postSave() {
         Post post = new Post();
         post.setTitle("Spring Data JPA Stuty");
@@ -67,10 +80,35 @@ public class JpaRunner implements ApplicationRunner {
         // session.delete(post);
     }
 
+    /**
+     * Fetch select
+     */
     public void fetchSelect() {
         Session session = entityManager.unwrap(Session.class);
         Comment comment = session.get(Comment.class, 5l);
         System.out.println(comment.getComment());
         System.out.println( comment.getPost().getTitle());
+    }
+
+    public void queryMapping() {
+        List<Post> posts =  new ArrayList<>();
+
+        // 1. TypedQuery
+        TypedQuery<Post> typedQuery = entityManager.createQuery("SELECT p FROM Post AS p", Post.class);
+        posts = typedQuery.getResultList();
+        posts.forEach(System.out::println);
+
+        // 2. CriteriaBuilder
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Post> criteriaQuery = builder.createQuery(Post.class);
+        Root<Post> root = criteriaQuery.from(Post.class);
+        criteriaQuery.select(root);
+
+        posts = entityManager.createQuery(criteriaQuery).getResultList();
+        posts.forEach(System.out::println);
+
+        // 3. createNamedQuery / createNativeQuery
+        posts = entityManager.createNativeQuery("SELECT * FROM Post", Post.class).getResultList();
+        posts.forEach(System.out::println);
     }
 }
