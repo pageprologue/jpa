@@ -2,8 +2,6 @@ package study.jpa.domain;
 
 import javax.persistence.Embeddable;
 
-import lombok.Getter;
-
 @Embeddable
 public class Address {
 

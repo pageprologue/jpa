@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import study.jpa.domain.Account;
+import study.jpa.domain.Study;
 
 @Transactional
 @Component
@@ -21,11 +22,16 @@ public class JpaRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Account account = new Account();
         account.setUsername("chloe");
-        // account.setPassword("password");
-        account.setPassword("hibernate");
+        account.setPassword("password");
+
+        Study study = new Study();
+        study.setName("Spring Data JPA");
+
+        account.addStudy(study);
 
         // entityManager.persist(account);
         Session session = entityManager.unwrap(Session.class);
         session.save(account);
+        session.save(study);
     }
 }
