@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +23,7 @@ public class JDBCTests {
         }
     }
 
-    @Test
+    @Ignore
     public void createTable() throws SQLException {
         String url = "jdbc:postgresql://localhost:25432/springdata";
         String username = "postgres";
@@ -37,7 +38,7 @@ public class JDBCTests {
         }
     }
 
-    @Test
+    @Ignore
     public void insertTable() throws SQLException {
         String url = "jdbc:postgresql://localhost:25432/springdata";
         String username = "postgres";
