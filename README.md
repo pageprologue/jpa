@@ -12,3 +12,4 @@
 ```psql springdata```
 
 4. create table   
+ Excute Junit Test: JDBCTests
