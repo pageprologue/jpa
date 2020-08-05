@@ -2,7 +2,10 @@ package study.jpa.domain;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,5 +35,17 @@ public class Account {
 
     @Transient
     private String no;
+
+    @Embedded
+    private Address address;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "state", column = @Column(name = "office_state")),
+        @AttributeOverride(name = "city", column = @Column(name = "office_city")),
+        @AttributeOverride(name = "street", column = @Column(name = "office_street")),
+        @AttributeOverride(name = "zipCode", column = @Column(name = "office_zipCode"))
+    })
+    private Address officeAddress;
     
 }
