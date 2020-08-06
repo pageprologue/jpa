@@ -1,4 +1,4 @@
-package study.jpa;
+package study.jpa.runner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +12,31 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import study.jpa.config.JPARegistrar;
 import study.jpa.domain.Account;
 import study.jpa.domain.Comment;
+import study.jpa.domain.JPA;
 import study.jpa.domain.Post;
 import study.jpa.domain.Study;
+import study.jpa.repository.PostJpaRepository;
 
 @Transactional
 @Component
 public class JpaRunner implements ApplicationRunner {
     @PersistenceContext
     EntityManager entityManager;
+
+    @Autowired
+    PostJpaRepository postJpaRepository;
+
+    @Autowired
+    JPA jap;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -37,6 +47,10 @@ public class JpaRunner implements ApplicationRunner {
         // fetchSelect();
 
         // queryMapping();
+
+        // jpaRepository();
+
+        jpaRegistrar();
     }
 
     /**
@@ -110,5 +124,13 @@ public class JpaRunner implements ApplicationRunner {
         // 3. createNamedQuery / createNativeQuery
         posts = entityManager.createNativeQuery("SELECT * FROM Post", Post.class).getResultList();
         posts.forEach(System.out::println);
+    }
+
+    public void jpaRepository() {
+        postJpaRepository.findAll().forEach(System.out::println);
+    }
+
+    public void jpaRegistrar() {
+        System.out.println(jap.getName());
     }
 }
