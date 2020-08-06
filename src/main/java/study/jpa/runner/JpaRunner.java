@@ -126,10 +126,17 @@ public class JpaRunner implements ApplicationRunner {
         posts.forEach(System.out::println);
     }
 
+    /**
+     * JpaRepository<Entity, Id>
+     * @Repository가 없어도 빈으로 등록해 줌
+     */
     public void jpaRepository() {
         postJpaRepository.findAll().forEach(System.out::println);
     }
 
+    /**
+     * ImportBeanDefinitionRegistrar
+     */
     public void jpaRegistrar() {
         System.out.println(jap.getName());
     }
