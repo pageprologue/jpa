@@ -10,5 +10,7 @@ import study.jpa.domain.Comment;
 public interface CommentRepository extends CommonRepository<Comment, Long> {
 
     List<Comment> findByCommentContainsIgnoreCaseAndLikeCountGreaterThan(String keyword, int likeCount);
+
+    List<Comment> findByCommentContainsIgnoreCaseOrderByLikeCountDesc(String keyword);
     
 }

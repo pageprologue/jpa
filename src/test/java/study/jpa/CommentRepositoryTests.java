@@ -47,12 +47,27 @@ public class CommentRepositoryTests {
 
     @Test
     public void queryExample() {
-        Comment comment = new Comment();
-        comment.setComment("Study Spring Data JPA");
-        comment.setLikeCount(1);
-        commentRepository.save(comment);
-
+        // Given
+        this.createComment("Study Spring Data JPA", 1);
+        // When
         List<Comment> comments = commentRepository.findByCommentContainsIgnoreCaseAndLikeCountGreaterThan("jpa", 10);
+        // Then
         assertThat(comments.size()).isEqualTo(0);
+
+        // Given
+        this.createComment("Jpa", 100);
+        this.createComment("Jpa", 20);
+        this.createComment("Jpa", 50);
+        // When
+        List<Comment> orderByComments = commentRepository.findByCommentContainsIgnoreCaseOrderByLikeCountDesc("jpa");
+        // Then
+        assertThat(orderByComments).first().hasFieldOrPropertyWithValue("likeCount", 100);
+    }
+
+    private void createComment(String keyword, int likeCount) {
+        Comment newComment = new Comment();
+        newComment.setComment(keyword);
+        newComment.setLikeCount(likeCount);
+        commentRepository.save(newComment);
     }
 }
