@@ -20,6 +20,8 @@ public class Comment {
 
     private String comment;
 
+    private Integer likeCount = 0;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Post post;
 }

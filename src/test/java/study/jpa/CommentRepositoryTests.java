@@ -1,5 +1,6 @@
 package study.jpa;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class CommentRepositoryTests {
     @Autowired
     CommentRepository commentRepository;
 
-    @Test
+    @Ignore
     public void crud() {
         // Given
         Comment comment = new Comment();
@@ -44,4 +45,14 @@ public class CommentRepositoryTests {
         commentById.orElseThrow(IllegalArgumentException::new);
     }
 
+    @Test
+    public void queryExample() {
+        Comment comment = new Comment();
+        comment.setComment("Study Spring Data JPA");
+        comment.setLikeCount(1);
+        commentRepository.save(comment);
+
+        List<Comment> comments = commentRepository.findByCommentContainsIgnoreCaseAndLikeCountGreaterThan("jpa", 10);
+        assertThat(comments.size()).isEqualTo(0);
+    }
 }
