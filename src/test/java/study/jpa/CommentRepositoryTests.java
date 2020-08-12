@@ -13,6 +13,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import study.jpa.domain.Comment;
@@ -50,7 +52,7 @@ public class CommentRepositoryTests {
     }
 
     @Test
-    public void queryExample() {
+    public void queryExample() throws InterruptedException, ExecutionException {
         // Given
         this.createComment("Study Spring Data JPA", 1);
         // When
@@ -62,12 +64,8 @@ public class CommentRepositoryTests {
         this.createComment("Jpa", 100);
         this.createComment("Jpa", 20);
         this.createComment("Jpa", 50);
-        // When
-        List<Comment> orderByComments = commentRepository.findByCommentContainsIgnoreCaseOrderByLikeCountDesc("jpa");
-        // Then
-        assertThat(orderByComments).first().hasFieldOrPropertyWithValue("likeCount", 100);
 
-        /* PageRequest Page List */
+        /* 1. PageRequest Page List */
         // When
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "likeCount"));
         Page<Comment> pageComments = commentRepository.findByCommentContainsIgnoreCase("jpa", pageRequest);
@@ -75,11 +73,21 @@ public class CommentRepositoryTests {
         assertThat(pageComments.getTotalElements()).isEqualTo(4);
         assertThat(pageComments).first().hasFieldOrPropertyWithValue("likeCount", 1);
 
-        /* PageRequest Page List */
+        /* 2. PageRequest Page List */
         try(Stream<Comment> streamComments = commentRepository.findByCommentContainsIgnoreCaseOrderByIdAsc("jpa")) {
             Comment firstComment = streamComments.findFirst().get();
             assertThat(firstComment.getLikeCount()).isEqualTo(1);
         }
+
+        /* 3. Future List */
+        /* 
+        // When
+        Future<List<Comment>> future = commentRepository.findByCommentContainsIgnoreCaseOrderByLikeCountDesc("jpa");
+        // Then
+        System.out.println("====== is done? " + future.isDone());
+        List<Comment> futureComments = future.get();
+        futureComments.forEach(System.out::println);
+        */
     }
 
     private void createComment(String keyword, int likeCount) {
