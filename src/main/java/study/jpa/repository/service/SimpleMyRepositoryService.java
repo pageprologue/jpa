@@ -7,14 +7,16 @@ import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import study.jpa.repository.CommonJpaRepository;
+import study.jpa.repository.SimpleMyRepository;
 
-public class CommonJpaRepositoryService<T, Id extends Serializable> extends SimpleJpaRepository<T, Id> implements CommonJpaRepository<T, Id> {
+
+public class SimpleMyRepositoryService<T, Id extends Serializable> extends SimpleJpaRepository<T, Id> implements SimpleMyRepository<T, Id> {
 
     private EntityManager entityManager;
 
-    public CommonJpaRepositoryService(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+    public SimpleMyRepositoryService(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
+        this.entityManager = entityManager;
     }
 
     @Override

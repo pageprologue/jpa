@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import study.jpa.config.JPARegistrar;
+import study.jpa.repository.service.SimpleMyRepositoryService;
 
 @SpringBootApplication
-@EnableJpaRepositories(repositoryImplementationPostfix = "Service")
+@EnableJpaRepositories(repositoryImplementationPostfix = "Service", repositoryBaseClass = SimpleMyRepositoryService.class)
 @Import(JPARegistrar.class)
 // @EnableAsync
 public class JpaApplication {
