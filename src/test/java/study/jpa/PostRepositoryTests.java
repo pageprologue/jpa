@@ -1,5 +1,6 @@
 package study.jpa;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class PostRepositoryTests {
     @Autowired
     PostJpaRepository postJpaRepository;
 
-    @Test
+    @Ignore
     public void crudRepository() {
         // Given
         Post post = new Post();
@@ -65,4 +66,17 @@ public class PostRepositoryTests {
         // Then
         assertThat(count).isEqualTo(1l);
     }
+
+    @Test
+    public void customRespository() {
+        
+        Post post = new Post();
+        post.setTitle("Hibernate");
+        postJpaRepository.save(post);
+
+        // postJpaRepository.findMyPost(); // run insert query
+        postJpaRepository.delete(post); // entity status: removed
+        postJpaRepository.flush(); // run delete query
+    }
+
 }
