@@ -26,7 +26,7 @@ public class CommentRepositoryTests {
     @Autowired
     CommentRepository commentRepository;
 
-    @Ignore
+    @Test
     public void crud() {
         // Given
         Comment comment = new Comment();
@@ -40,7 +40,7 @@ public class CommentRepositoryTests {
 
         // When
         long count = commentRepository.count();
-        // The4
+        // Then
         assertThat(count).isEqualTo(1);
 
         // When

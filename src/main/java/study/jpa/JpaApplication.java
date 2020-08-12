@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import study.jpa.config.JPARegistrar;
 
 @SpringBootApplication
-@EnableJpaRepositories(repositoryImplementationPostfix = "Impl")
+@EnableJpaRepositories(repositoryImplementationPostfix = "Service")
 @Import(JPARegistrar.class)
 // @EnableAsync
 public class JpaApplication {

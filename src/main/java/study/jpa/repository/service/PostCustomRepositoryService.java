@@ -1,4 +1,4 @@
-package study.jpa.service.impl;
+package study.jpa.repository.service;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import study.jpa.domain.Post;
-import study.jpa.service.PostCustomRepository;
+import study.jpa.repository.PostCustomRepository;
 
 @Repository
 @Transactional
-public class PostCustomRepositoryImpl implements PostCustomRepository<Post> {
+public class PostCustomRepositoryService implements PostCustomRepository<Post> {
 
     @Autowired
     EntityManager entityManager;

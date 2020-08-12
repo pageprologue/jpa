@@ -28,7 +28,7 @@ public class PostRepositoryTests {
     @Autowired
     PostJpaRepository postJpaRepository;
 
-    @Ignore
+    @Test
     public void crudRepository() {
         // Given
         Post post = new Post();

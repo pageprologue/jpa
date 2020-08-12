@@ -1,4 +1,4 @@
-package study.jpa.service;
+package study.jpa.repository;
 
 import java.util.List;
 
