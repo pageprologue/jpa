@@ -10,13 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.domain.AbstractAggregateRoot;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
-public class Post {
+public class Post extends AbstractAggregateRoot<Post>{
 
     @Id
     @GeneratedValue
@@ -37,5 +39,10 @@ public class Post {
         return "Post{" +
                 "title='" + title + '\'' +
                 '}';
+    }
+    
+    public Post publish() {
+        this.registerEvent(new PostPublishedEvent(this));
+        return this;
     }
 }
