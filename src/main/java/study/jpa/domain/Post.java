@@ -1,5 +1,6 @@
 package study.jpa.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -28,6 +31,9 @@ public class Post extends AbstractAggregateRoot<Post>{
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
     public void addCommnet(Comment comment) {
         this.getComments().add(comment);
