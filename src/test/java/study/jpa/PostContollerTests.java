@@ -8,9 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.hamcrest.Matchers;
+import org.hamcrest.core.Is;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import study.jpa.domain.Post;
 import study.jpa.repository.PostJpaRepository;
@@ -28,12 +32,28 @@ public class PostContollerTests {
 
     @Test
     public void getPost() throws Exception {
-        Post post = new Post();
+        final Post post = new Post();
         post.setTitle("web");
         postJpaRepository.save(post);
         
         mockMvc.perform(get("/posts/" + post.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getPosts() throws Exception {
+        final Post post = new Post();
+        post.setTitle("page");
+        postJpaRepository.save(post);
+
+        mockMvc.perform(get("/posts/")
+                .param("page", "0")
+                .param("size", "10")
+                .param("sort", "created,desc")
+                .param("sort", "title"))
+                .andDo(print())           
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].title", Matchers.is("page")));
     }
 }
