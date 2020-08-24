@@ -43,9 +43,7 @@ public class PostContollerTests {
 
     @Test
     public void getPosts() throws Exception {
-        final Post post = new Post();
-        post.setTitle("page");
-        postJpaRepository.save(post);
+        createPosts("page");
 
         mockMvc.perform(get("/posts/")
                 .param("page", "0")
@@ -55,5 +53,29 @@ public class PostContollerTests {
                 .andDo(print())           
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].title", Matchers.is("page")));
+    }
+
+    @Test
+    public void getHateoasPosts() throws Exception {
+        createPosts("hateoas");
+
+        mockMvc.perform(get("/posts/hateoas/")
+                .param("page", "0")
+                .param("size", "10")
+                .param("sort", "created,desc")
+                .param("sort", "title"))
+                .andDo(print())           
+                .andExpect(status().isOk());
+    }
+
+    private void createPosts(String title) {
+        int postCount = 100;
+
+        while(postCount > 100) {
+            Post post = new Post() ;
+            post.setTitle(title);
+            postJpaRepository.save(post);
+            postCount--;
+        }
     }
 }

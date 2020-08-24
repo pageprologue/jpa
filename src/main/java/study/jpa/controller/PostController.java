@@ -11,6 +11,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +40,12 @@ public class PostController {
     public Page<Post> getPosts(Pageable pageable) {
 
         return postJpaRepository.findAll(pageable);
+    }
+
+    @GetMapping(value="/posts/hateoas")
+    public PagedModel<EntityModel<Post>> getPostsHateoas(Pageable pageable, PagedResourcesAssembler<Post> assembler) {
+
+        return assembler.toModel(postJpaRepository.findAll(pageable));
     }
     
 }

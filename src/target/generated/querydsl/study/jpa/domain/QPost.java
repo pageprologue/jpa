@@ -22,6 +22,8 @@ public class QPost extends EntityPathBase<Post> {
 
     public final SetPath<Comment, QComment> comments = this.<Comment, QComment>createSet("comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
+    public final DateTimePath<java.util.Date> created = createDateTime("created", java.util.Date.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath title = createString("title");
