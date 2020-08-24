@@ -19,9 +19,13 @@ public class PostController {
     private PostJpaRepository postJpaRepository;
 
     @GetMapping(value="/posts/{id}")
-    public String getMethodName(@PathVariable Long id) {
+    public String getMethodName(@PathVariable("id") Post post) {
+        /* 
+        // DomainClassConverter does exactly the same job as findById.
         Optional<Post> byId = postJpaRepository.findById(id);
-        Post post = byId.get();
+        Post post = byId.get(); 
+         */
+        
         return post.getTitle();
     }
 }
