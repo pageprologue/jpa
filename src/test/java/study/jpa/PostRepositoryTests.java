@@ -13,6 +13,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import study.jpa.domain.Post;
 import study.jpa.repository.PostJpaRepository;
 
@@ -24,9 +27,12 @@ import study.jpa.repository.PostJpaRepository;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class PostRepositoryTests {
+
+    @PersistenceContext
+    private EntityManager entityManager;
     
     @Autowired
-    PostJpaRepository postJpaRepository;
+    private PostJpaRepository postJpaRepository;
 
     @Test
     public void crudRepository() {
@@ -69,7 +75,6 @@ public class PostRepositoryTests {
 
     @Test
     public void customRespository() {
-        
         Post post = new Post();
         post.setTitle("Hibernate");
         postJpaRepository.save(post);
@@ -77,6 +82,29 @@ public class PostRepositoryTests {
         // postJpaRepository.findMyPost(); // run insert query
         postJpaRepository.delete(post); // entity status: removed
         postJpaRepository.flush(); // run delete query
+    }
+
+    @Test
+    public void savaOrupdate() {
+        Post post = new Post();
+        post.setTitle("Post 100");
+        Post savePost = postJpaRepository.save(post); // persist
+
+        assertThat(entityManager.contains(post)).isTrue();
+        assertThat(entityManager.contains(savePost)).isTrue();
+        assertThat(savePost == post);
+
+        Post postUpdate = new Post();
+        postUpdate.setId(post.getId());
+        postUpdate.setTitle("Post 100 Update");
+        Post updatedPost = postJpaRepository.save(postUpdate); // merge
+
+        assertThat(entityManager.contains(postUpdate)).isFalse();
+        assertThat(entityManager.contains(updatedPost)).isTrue();
+        assertThat(postUpdate == updatedPost);
+
+        List<Post> postList = postJpaRepository.findAll();
+        assertThat(postList.size()).isEqualTo(1);
     }
 
 }
