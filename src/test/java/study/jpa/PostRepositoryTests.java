@@ -107,4 +107,23 @@ public class PostRepositoryTests {
         assertThat(postList.size()).isEqualTo(1);
     }
 
+    @Test
+    public void findByTitleStartsWith() {
+        Post post = new Post();
+        post.setTitle("Query Method");
+        postJpaRepository.save(post);
+
+        List<Post> postList = postJpaRepository.findByTitleStartsWith("Query");
+        assertThat(postList.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void findByTitle() {
+        Post post = new Post();
+        post.setTitle("Named Query Method");
+        postJpaRepository.save(post);
+
+        List<Post> postList = postJpaRepository.findByTitle("Named Query Method");
+        assertThat(postList.size()).isEqualTo(1);
+    }
 }
