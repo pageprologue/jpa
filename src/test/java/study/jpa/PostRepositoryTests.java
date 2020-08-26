@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.*;
@@ -123,7 +125,9 @@ public class PostRepositoryTests {
         post.setTitle("Named Query Method");
         postJpaRepository.save(post);
 
-        List<Post> postList = postJpaRepository.findByTitle("Named Query Method");
+        List<Post> postList = postJpaRepository.findByTitle("Named Query Method", Sort.by("title"));
+        List<Post> postListSortByLength = postJpaRepository.findByTitle("Named Query Method", JpaSort.unsafe("LENGTH(title)"));
         assertThat(postList.size()).isEqualTo(1);
+        assertThat(postListSortByLength.size()).isEqualTo(1);
     }
 }
