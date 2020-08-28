@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -129,5 +130,25 @@ public class PostRepositoryTests {
         List<Post> postListSortByLength = postJpaRepository.findByTitle("Named Query Method", JpaSort.unsafe("LENGTH(title)"));
         assertThat(postList.size()).isEqualTo(1);
         assertThat(postListSortByLength.size()).isEqualTo(1);
+    }
+
+    private Post savePost() {
+        Post post = new Post();
+        post.setTitle("Hi");
+        return postJpaRepository.save(post); //psersist
+    }
+
+    @Test
+    public void update() {
+        Post post = savePost();
+
+        int update = postJpaRepository.updateTitle(post.getId(), "updated");
+        assertThat(update).isEqualTo(1);
+
+        Optional<Post> byId = postJpaRepository.findById(post.getId());
+        assertThat(byId.get().getTitle()).isEqualTo("updated"); // false.
+        // Because the cache was not emptied in one transaction. -> clearAutomatically = true
+        // Select query shall be executed. (persistence context cleaer) => flushAutomatically = true
+        
     }
 }
