@@ -149,6 +149,14 @@ public class PostRepositoryTests {
         assertThat(byId.get().getTitle()).isEqualTo("updated"); // false.
         // Because the cache was not emptied in one transaction. -> clearAutomatically = true
         // Select query shall be executed. (persistence context cleaer) => flushAutomatically = true
-        
+    }
+
+    @Test
+    public void setUpdate() {
+        Post post = savePost();
+        post.setTitle("set is update");
+
+        List<Post> postList = postJpaRepository.findAll();
+        assertThat(postList.get(0).getTitle()).isEqualTo("set is update");
     }
 }
