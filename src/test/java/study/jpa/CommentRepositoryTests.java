@@ -106,6 +106,5 @@ public class CommentRepositoryTests {
         System.out.println("==========================");
 
         Optional<Comment> commentEntityGraph = commentRepository.getById(1l);
-
     }
 }

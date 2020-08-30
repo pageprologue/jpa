@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@NamedEntityGraph(name = "Comment.post", attributeNodes = @NamedAttributeNode("post"))
+// @NamedEntityGraph(name = "Comment.post", attributeNodes = @NamedAttributeNode("post"))
 public class Comment {
 
     @Id

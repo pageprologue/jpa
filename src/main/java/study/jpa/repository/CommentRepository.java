@@ -31,6 +31,7 @@ public interface CommentRepository extends CommonRepository<Comment, Long> {
     // EntityGraphType.LOAD is follows the basic strategy of FETCH TYPE mode.
     // EntityGraphType.FETCH sets the value set for @NamedEntityGraph to FETCH mode and the rest to EAGER mode
     // Even so, the default value (ex. id, comment) is set in EAGER mode.
-    @EntityGraph(value = "Comment.post", type = EntityGraphType.LOAD) 
+    // @EntityGraph(value = "Comment.post", type = EntityGraphType.LOAD) 
+    @EntityGraph(attributePaths = "post")
     Optional<Comment> getById(Long id);
 }
