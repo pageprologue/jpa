@@ -10,4 +10,7 @@ public interface CommentSummary {
 
     Boolean getBest();
 
+    // interface open projection
+    @Value("#{target.likeCount + ' ' + target.hateCount}")
+    String getVotes();
 }

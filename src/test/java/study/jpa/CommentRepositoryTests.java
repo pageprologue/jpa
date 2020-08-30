@@ -18,14 +18,19 @@ import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import study.jpa.domain.Comment;
+import study.jpa.domain.Post;
 import study.jpa.repository.CommentRepository;
 import study.jpa.repository.CommentSummary;
+import study.jpa.repository.PostJpaRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class CommentRepositoryTests {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    PostJpaRepository postJpaRepository;
 
     @Test
     public void crud() {
@@ -112,7 +117,23 @@ public class CommentRepositoryTests {
     @Test
     public void projection() {
         // interface closed projection
+        // If open projection is present on the interface, it will not be closed projection.
         List<CommentSummary> closed = commentRepository.findByPost_id(1l);
 
+        // interface open projection
+        Post post = new Post();
+        post.setTitle("open projection");
+        Post savePost = postJpaRepository.save(post);
+        
+        Comment commnet = new Comment();
+        commnet.setLikeCount(100);
+        commnet.setHateCount(5);
+        commnet.setPost(savePost);
+        commentRepository.save(commnet);
+        
+        commentRepository.findByPost_id(savePost.getId()).forEach(c -> {
+            System.out.println("==========================");
+            System.out.println(c.getVotes());
+        });
     }
 }
