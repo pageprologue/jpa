@@ -6,11 +6,15 @@ public interface CommentSummary {
 
     String getComment();
 
-    Boolean getReply();
+    int getLikeCount();
 
-    Boolean getBest();
+    int getHateCount();
 
     // interface open projection
-    @Value("#{target.likeCount + ' ' + target.hateCount}")
-    String getVotes();
+    // @Value("#{target.likeCount + ' ' + target.hateCount}")
+    // String getVotes();
+
+    default String getVotes() {
+        return getLikeCount() + " " +  getHateCount();
+    }
 }
