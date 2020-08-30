@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import study.jpa.domain.Comment;
 import study.jpa.domain.CommentSummary;
 import study.jpa.domain.Post;
+import study.jpa.repository.CommentOnly;
 import study.jpa.repository.CommentRepository;
 import study.jpa.repository.PostJpaRepository;
 
@@ -118,7 +119,7 @@ public class CommentRepositoryTests {
     public void projection() {
         // closed projection
         // If open projection is present on the interface, it will not be closed projection.
-        List<CommentSummary> closed = commentRepository.findByPost_id(1l);
+        List<CommentSummary> closed = commentRepository.findByPost_id(1l, CommentSummary.class);
 
         // open projection
         Post post = new Post();
@@ -126,14 +127,20 @@ public class CommentRepositoryTests {
         Post savePost = postJpaRepository.save(post);
         
         Comment commnet = new Comment();
+        commnet.setComment("hahaha");
         commnet.setLikeCount(100);
         commnet.setHateCount(5);
         commnet.setPost(savePost);
         commentRepository.save(commnet);
         
-        commentRepository.findByPost_id(savePost.getId()).forEach(c -> {
+        commentRepository.findByPost_id(savePost.getId(), CommentSummary.class).forEach(c -> {
             System.out.println("==========================");
             System.out.println(c.getVotes());
+        });
+
+        commentRepository.findByPost_id(savePost.getId(), CommentOnly.class).forEach(c -> {
+            System.out.println("==========================");
+            System.out.println(c.getComment());
         });
     }
 }
