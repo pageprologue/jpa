@@ -31,7 +31,7 @@ public class Post extends AbstractAggregateRoot<Post>{
     
     private String title;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // @_Many : Default fetchType is LAZY
     private Set<Comment> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)

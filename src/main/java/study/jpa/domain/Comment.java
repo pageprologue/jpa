@@ -22,6 +22,6 @@ public class Comment {
 
     private Integer likeCount = 0;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER) // @_One : Default fetchType is EAGER
     private Post post;
 }
