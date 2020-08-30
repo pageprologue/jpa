@@ -96,4 +96,12 @@ public class CommentRepositoryTests {
         newComment.setLikeCount(likeCount);
         commentRepository.save(newComment);
     }
+
+    @Test
+    public void getComment() {
+        // FetchType.EAGER : select left join Post 
+        // FetchType.LAZY : select only commnet
+        Optional<Comment> comment = commentRepository.findById(1l);
+
+    }
 }
