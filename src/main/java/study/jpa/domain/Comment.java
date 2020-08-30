@@ -23,7 +23,15 @@ public class Comment {
 
     private String comment;
 
-    private Integer likeCount = 0;
+    private String CommentType;
+    
+    private boolean reply;
+
+    private boolean best;
+
+    private int likeCount = 0;
+
+    private int hateCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY) // @_One : Default fetchType is EAGER
     private Post post;

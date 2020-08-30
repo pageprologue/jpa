@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import study.jpa.domain.Comment;
 import study.jpa.repository.CommentRepository;
+import study.jpa.repository.CommentSummary;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -106,5 +107,12 @@ public class CommentRepositoryTests {
         System.out.println("==========================");
 
         Optional<Comment> commentEntityGraph = commentRepository.getById(1l);
+    }
+
+    @Test
+    public void projection() {
+        // interface closed projection
+        List<CommentSummary> closed = commentRepository.findByPost_id(1l);
+
     }
 }

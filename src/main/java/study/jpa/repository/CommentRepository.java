@@ -34,4 +34,8 @@ public interface CommentRepository extends CommonRepository<Comment, Long> {
     // @EntityGraph(value = "Comment.post", type = EntityGraphType.LOAD) 
     @EntityGraph(attributePaths = "post")
     Optional<Comment> getById(Long id);
+
+    // interface closed projection
+    List<CommentSummary> findByPost_id(Long id);
+    
 }
