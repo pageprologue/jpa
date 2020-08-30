@@ -5,6 +5,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +14,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
+@NamedEntityGraph(name = "Comment.post", attributeNodes = @NamedAttributeNode("post"))
 public class Comment {
 
     @Id
@@ -22,6 +25,6 @@ public class Comment {
 
     private Integer likeCount = 0;
 
-    @ManyToOne(fetch = FetchType.EAGER) // @_One : Default fetchType is EAGER
+    @ManyToOne(fetch = FetchType.LAZY) // @_One : Default fetchType is EAGER
     private Post post;
 }

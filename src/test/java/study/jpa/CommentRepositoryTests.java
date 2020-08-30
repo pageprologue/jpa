@@ -103,5 +103,9 @@ public class CommentRepositoryTests {
         // FetchType.LAZY : select only commnet
         Optional<Comment> comment = commentRepository.findById(1l);
 
+        System.out.println("==========================");
+
+        Optional<Comment> commentEntityGraph = commentRepository.getById(1l);
+
     }
 }
